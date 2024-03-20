@@ -19,13 +19,13 @@ import static org.postgis.geojson.GeometryTypes.*;
 
 /**
  * Serializer for Geometry types.
- * 
+ *
  * @author Maycon Viana Bordin <mayconbordin@gmail.com>
  */
 public class GeometrySerializer extends JsonSerializer<Geometry> {
-    
+
     @Override
-    public void serialize(Geometry geom, JsonGenerator json, SerializerProvider provider) 
+    public void serialize(Geometry geom, JsonGenerator json, SerializerProvider provider)
             throws IOException, JsonProcessingException {
         json.writeStartObject();
 
@@ -47,18 +47,18 @@ public class GeometrySerializer extends JsonSerializer<Geometry> {
 
         json.writeEndObject();
     }
-    
+
     protected void serializeGeometryCollection(GeometryCollection gc, JsonGenerator json) throws IOException {
         writeTypeField(GEOMETRY_COLLECTION, json);
         json.writeArrayFieldStart("geometries");
-        
+
         for (Geometry geom : gc.getGeometries()) {
             serialize(geom, json, null);
         }
-        
+
         json.writeEndArray();
     }
-    
+
     protected void serializeMultiLineString(MultiLineString mls, JsonGenerator json) throws IOException {
         writeTypeField(MULTI_LINE_STRING, json);
         writeStartCoordinates(json);
@@ -71,14 +71,14 @@ public class GeometrySerializer extends JsonSerializer<Geometry> {
 
         writeEndCoordinates(json);
     }
-    
+
     protected void serializeMultiPoint(MultiPoint mp, JsonGenerator json) throws IOException {
         writeTypeField(MULTI_POINT, json);
         writeStartCoordinates(json);
         writePoints(json, mp.getPoints());
         writeEndCoordinates(json);
     }
-    
+
     protected void serializeMultiPolygon(MultiPolygon mp, JsonGenerator json) throws IOException {
         writeTypeField(MULTI_POLYGON, json);
         writeStartCoordinates(json);
@@ -97,14 +97,14 @@ public class GeometrySerializer extends JsonSerializer<Geometry> {
 
         writeEndCoordinates(json);
     }
-    
+
     protected void serializeLineString(LineString ls, JsonGenerator json) throws IOException {
         writeTypeField(LINE_STRING, json);
         writeStartCoordinates(json);
         writePoints(json, ls.getPoints());
         writeEndCoordinates(json);
     }
-    
+
     protected void serializePolygon(Polygon polygon, JsonGenerator json) throws IOException {
         writeTypeField(POLYGON, json);
         writeStartCoordinates(json);
@@ -117,7 +117,7 @@ public class GeometrySerializer extends JsonSerializer<Geometry> {
 
         writeEndCoordinates(json);
     }
-    
+
     protected void serializePoint(Point point, JsonGenerator json) throws IOException {
         writeTypeField(POINT, json);
         writeStartCoordinates(json);

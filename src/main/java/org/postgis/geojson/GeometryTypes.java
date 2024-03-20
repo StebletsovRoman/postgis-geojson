@@ -2,7 +2,7 @@ package org.postgis.geojson;
 
 /**
  * GeoJSON supported types.
- * 
+ *
  * @author Maycon Viana Bordin <mayconbordin@gmail.com>
  */
 public interface GeometryTypes {

@@ -7,7 +7,7 @@ import org.postgis.geojson.serializers.GeometrySerializer;
 
 /**
  * Module for loading serializers/deserializers.
- * 
+ *
  * @author Maycon Viana Bordin <mayconbordin@gmail.com>
  */
 public class PostGISModule extends SimpleModule {
