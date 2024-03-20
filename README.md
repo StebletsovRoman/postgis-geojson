@@ -3,7 +3,7 @@
 
 GeoJSON Jackson Serializers and Deserializers for PostGIS Geometry objects.
 
-Note: this is a fork from https://github.com/mayconbordin/postgis-geojson with updated dependencies.
+Note: this is a fork from https://github.com/mayconbordin/postgis-geojson with updated dependencies, and improvements from https://github.com/sdeleuze/postgis-geojson
 
 ## GeoJSON Support
 
@@ -39,7 +39,7 @@ Then add the dependency to your `pom.xml` file:
 <dependency>
   <groupId>com.github.GeosatCO</groupId>
   <artifactId>postgis-geojson</artifactId>
-  <version>1.1</version>
+  <version>1.2</version>
 </dependency>
 ```
 
@@ -48,7 +48,7 @@ Or in a `build.sbt`:
 ```sbt
 resolvers += "jitpack" at "https://jitpack.io"
 
-libraryDependencies += "com.github.GeosatCO" % "postgis-geojson" % "1.1"
+libraryDependencies += "com.github.GeosatCO" % "postgis-geojson" % "1.2"
 
 ```
 
