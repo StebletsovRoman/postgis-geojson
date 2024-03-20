@@ -30,19 +30,19 @@ public class GeometrySerializer extends JsonSerializer<Geometry> {
         json.writeStartObject();
 
         if (geom instanceof Point) {
-            serializePoint((Point)geom, json);
+            serializePoint((Point) geom, json);
         } else if (geom instanceof Polygon) {
-            serializePolygon((Polygon)geom, json);
+            serializePolygon((Polygon) geom, json);
         } else if (geom instanceof LineString) {
-            serializeLineString((LineString)geom, json);
+            serializeLineString((LineString) geom, json);
         } else if (geom instanceof MultiPolygon) {
-            serializeMultiPolygon((MultiPolygon)geom, json);
+            serializeMultiPolygon((MultiPolygon) geom, json);
         } else if (geom instanceof MultiPoint) {
-            serializeMultiPoint((MultiPoint)geom, json);
+            serializeMultiPoint((MultiPoint) geom, json);
         } else if (geom instanceof MultiLineString) {
-            serializeMultiLineString((MultiLineString)geom, json);
+            serializeMultiLineString((MultiLineString) geom, json);
         } else if (geom instanceof GeometryCollection) {
-            serializeGeometryCollection((GeometryCollection)geom, json);
+            serializeGeometryCollection((GeometryCollection) geom, json);
         }
 
         json.writeEndObject();
@@ -86,7 +86,7 @@ public class GeometrySerializer extends JsonSerializer<Geometry> {
         for (Polygon polygon : mp.getPolygons()) {
             json.writeStartArray();
 
-            for (int i=0; i<polygon.numRings(); i++) {
+            for (int i = 0; i < polygon.numRings(); i++) {
                 json.writeStartArray();
                 writePoints(json, polygon.getRing(i).getPoints());
                 json.writeEndArray();
@@ -109,7 +109,7 @@ public class GeometrySerializer extends JsonSerializer<Geometry> {
         writeTypeField(POLYGON, json);
         writeStartCoordinates(json);
 
-        for (int i=0; i<polygon.numRings(); i++) {
+        for (int i = 0; i < polygon.numRings(); i++) {
             json.writeStartArray();
             writePoints(json, polygon.getRing(i).getPoints());
             json.writeEndArray();
@@ -121,7 +121,12 @@ public class GeometrySerializer extends JsonSerializer<Geometry> {
     protected void serializePoint(Point point, JsonGenerator json) throws IOException {
         writeTypeField(POINT, json);
         writeStartCoordinates(json);
-        writeNumbers(json, point.getX(), point.getY(), point.getZ());
+        if (point.dimension > 2) {
+            writeNumbers(json, point.getX(), point.getY(), point.getZ());
+        } else {
+            writeNumbers(json, point.getX(), point.getY());
+        }
+
         writeEndCoordinates(json);
     }
 
@@ -137,7 +142,7 @@ public class GeometrySerializer extends JsonSerializer<Geometry> {
         json.writeEndArray();
     }
 
-    protected void writeNumbers(JsonGenerator json, double...numbers) throws IOException {
+    protected void writeNumbers(JsonGenerator json, double... numbers) throws IOException {
         for (double number : numbers) {
             json.writeNumber(number);
         }
@@ -146,7 +151,11 @@ public class GeometrySerializer extends JsonSerializer<Geometry> {
     protected void writePoints(JsonGenerator json, Point[] points) throws IOException {
         for (Point point : points) {
             json.writeStartArray();
-            writeNumbers(json, point.getX(), point.getY(), point.getZ());
+            if (point.dimension > 2) {
+                writeNumbers(json, point.getX(), point.getY(), point.getZ());
+            } else {
+                writeNumbers(json, point.getX(), point.getY());
+            }
             json.writeEndArray();
         }
     }
