@@ -1,7 +1,9 @@
 # postgis-geojson
-[![Build Status](https://travis-ci.org/mayconbordin/postgis-geojson.svg?branch=master)](https://travis-ci.org/mayconbordin/postgis-geojson) [![Release](https://img.shields.io/github/release/mayconbordin/postgis-geojson.svg?label=JitPack)](https://jitpack.io/#mayconbordin/postgis-geojson)
+[![Release](https://img.shields.io/github/release/GeosatCO/postgis-geojson.svg?label=JitPack)](https://jitpack.io/#GeosatCO/postgis-geojson)
 
 GeoJSON Jackson Serializers and Deserializers for PostGIS Geometry objects.
+
+Note: this is a fork from https://github.com/mayconbordin/postgis-geojson with updated dependencies.
 
 ## GeoJSON Support
 
@@ -35,11 +37,21 @@ Then add the dependency to your `pom.xml` file:
 
 ```xml
 <dependency>
-  <groupId>com.github.mayconbordin</groupId>
+  <groupId>com.github.GeosatCO</groupId>
   <artifactId>postgis-geojson</artifactId>
-  <version>1.0</version>
+  <version>1.1</version>
 </dependency>
 ```
+
+Or in a `build.sbt`:
+
+```sbt
+resolvers += "jitpack" at "https://jitpack.io"
+
+libraryDependencies += "com.github.GeosatCO" % "postgis-geojson" % "1.1"
+
+```
+
 
 For more information on how to build the library with other tools (Gradle, Sbt, Leiningen) see the [JitPack documentation](https://jitpack.io/docs/BUILDING/).
 
