@@ -25,6 +25,8 @@ import static org.postgis.geojson.GeometryTypes.*;
  */
 public class GeometrySerializer extends StdSerializer<Geometry> {
 
+    boolean isSridAdded = false;
+
     public GeometrySerializer() {
         super(Geometry.class);
     }
@@ -33,6 +35,10 @@ public class GeometrySerializer extends StdSerializer<Geometry> {
     public void serialize(Geometry geom, JsonGenerator json, SerializerProvider provider)
             throws IOException, JsonProcessingException {
         json.writeStartObject();
+        if (!isSridAdded) {
+            writeSridField(geom, json);
+            isSridAdded = true;
+        }
 
         if (geom instanceof Point) {
             serializePoint((Point) geom, json);
@@ -163,5 +169,18 @@ public class GeometrySerializer extends StdSerializer<Geometry> {
             }
             json.writeEndArray();
         }
+    }
+
+    protected void writeSridField(Geometry geom, JsonGenerator json) throws IOException {
+        int srid = geom.getSrid();
+        if (srid > 0) {
+            json.writeObjectFieldStart("crs");
+            json.writeStringField("type", "name");
+            json.writeObjectFieldStart("properties");
+            json.writeStringField("name", "EPSG:" + srid);
+            json.writeEndObject();
+            json.writeEndObject();
+        }
+        // "crs":{"type":"name","properties":{"name":"EPSG:4326"}}
     }
 }

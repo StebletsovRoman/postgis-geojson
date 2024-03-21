@@ -20,6 +20,7 @@ import org.skyscreamer.jsonassert.JSONAssert;
  *
  * @author mayconbordin
  * @author Sebastien Deleuze
+ * @author C Daniel Sanchez
  */
 public class GeometrySerializerTest {
     protected ObjectMapper mapper;
@@ -281,6 +282,28 @@ public class GeometrySerializerTest {
                         new Point(101.0, 0.0, 0.0), new Point(102.0, 1.0, 0.0)
                 })
         });
+
+        String actual = mapper.writeValueAsString(obj);
+        JSONAssert.assertEquals(expected, actual, false);
+    }
+
+    @Test
+    public void testSerializeSRID() throws Exception {
+        System.out.println("testSerializeSRID");
+
+        String expected = "{\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"EPSG:4326\"}},"
+                + "\"type\": \"GeometryCollection\","
+                +"\"geometries\": ["
+                        + "{ \"type\": \"Point\", \"coordinates\": [100.0, 0.0, 0.0]},"
+                        + "{ \"type\": \"LineString\", \"coordinates\": [ [101.0, 0.0, 0.0], [102.0, 1.0, 0.0] ] }"
+                + "]}";
+
+        GeometryCollection obj = new GeometryCollection(new Geometry[] {
+                new Point(100.0, 0.0, 0.0), new LineString(new Point[] {
+                        new Point(101.0, 0.0, 0.0), new Point(102.0, 1.0, 0.0)
+                })
+        });
+        obj.setSrid(4326);
 
         String actual = mapper.writeValueAsString(obj);
         JSONAssert.assertEquals(expected, actual, false);

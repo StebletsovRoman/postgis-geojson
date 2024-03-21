@@ -25,17 +25,16 @@ public class GeometryDeserializerTest {
 
     @Before
     public void setUp() {
-        int srid = 4326;
         mapper = new ObjectMapper();
         SimpleModule module = new SimpleModule("MyModule");
-        module.addDeserializer(Geometry.class, new GeometryDeserializer<Geometry>(srid));
-        module.addDeserializer(Point.class, new GeometryDeserializer<Point>(srid));
-        module.addDeserializer(Polygon.class, new GeometryDeserializer<Polygon>(srid));
-        module.addDeserializer(LineString.class, new GeometryDeserializer<LineString>(srid));
-        module.addDeserializer(MultiPolygon.class, new GeometryDeserializer<MultiPolygon>(srid));
-        module.addDeserializer(MultiPoint.class, new GeometryDeserializer<MultiPoint>(srid));
-        module.addDeserializer(MultiLineString.class, new GeometryDeserializer<MultiLineString>(srid));
-        module.addDeserializer(GeometryCollection.class, new GeometryDeserializer<GeometryCollection>(srid));
+        module.addDeserializer(Geometry.class, new GeometryDeserializer<Geometry>());
+        module.addDeserializer(Point.class, new GeometryDeserializer<Point>());
+        module.addDeserializer(Polygon.class, new GeometryDeserializer<Polygon>());
+        module.addDeserializer(LineString.class, new GeometryDeserializer<LineString>());
+        module.addDeserializer(MultiPolygon.class, new GeometryDeserializer<MultiPolygon>());
+        module.addDeserializer(MultiPoint.class, new GeometryDeserializer<MultiPoint>());
+        module.addDeserializer(MultiLineString.class, new GeometryDeserializer<MultiLineString>());
+        module.addDeserializer(GeometryCollection.class, new GeometryDeserializer<GeometryCollection>());
         mapper.registerModule(module);
     }
 
@@ -232,6 +231,41 @@ public class GeometryDeserializerTest {
 
         assertEquals(100.0, p.getLine(0).getPoint(4).getX(), 0.0);
         assertEquals(0.0, p.getLine(0).getPoint(4).getY(), 0.0);
+    }
+
+    @Test
+    public void testDeserializerSRID() throws Exception {
+        System.out.println("deserializer SRID");
+
+        String json = "{\"id\": 1,"
+                + "\"shape\":{\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"EPSG:4326\"}},"
+                + "\"type\":\"MultiLineString\",\"coordinates\":"
+                + "[[[100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0]]]"
+                + "}}";
+
+        InnerClass c = mapper.readValue(json, InnerClass.class);
+        MultiLineString p = c.shape();
+
+        assertNotNull(p);
+        assertEquals(1, p.numLines());
+        assertEquals(5, p.numPoints());
+
+        assertEquals(100.0, p.getLine(0).getPoint(0).getX(), 0.0);
+        assertEquals(0.0, p.getLine(0).getPoint(0).getY(), 0.0);
+
+        assertEquals(101.0, p.getLine(0).getPoint(1).getX(), 0.0);
+        assertEquals(0.0, p.getLine(0).getPoint(1).getY(), 0.0);
+
+        assertEquals(101.0, p.getLine(0).getPoint(2).getX(), 0.0);
+        assertEquals(1.0, p.getLine(0).getPoint(2).getY(), 0.0);
+
+        assertEquals(100.0, p.getLine(0).getPoint(3).getX(), 0.0);
+        assertEquals(1.0, p.getLine(0).getPoint(3).getY(), 0.0);
+
+        assertEquals(100.0, p.getLine(0).getPoint(4).getX(), 0.0);
+        assertEquals(0.0, p.getLine(0).getPoint(4).getY(), 0.0);
+
+        assertEquals(4326, p.getSrid());
     }
 
 }
