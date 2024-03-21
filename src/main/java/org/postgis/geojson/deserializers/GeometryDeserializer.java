@@ -1,16 +1,18 @@
 package org.postgis.geojson.deserializers;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonNode;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+
 import org.postgis.Geometry;
 import org.postgis.GeometryCollection;
 import org.postgis.LineString;
@@ -20,6 +22,7 @@ import org.postgis.MultiPoint;
 import org.postgis.MultiPolygon;
 import org.postgis.Point;
 import org.postgis.Polygon;
+
 import static org.postgis.geojson.GeometryTypes.*;
 
 /**
@@ -28,7 +31,20 @@ import static org.postgis.geojson.GeometryTypes.*;
  * @author Maycon Viana Bordin <mayconbordin@gmail.com>
  * @author Sebastien Deleuze
  */
-public class GeometryDeserializer<T extends Geometry> extends JsonDeserializer<T> {
+public class GeometryDeserializer<T extends Geometry> extends StdDeserializer<T> {
+    private int srid;
+
+    public GeometryDeserializer() {
+        this(null);
+    }
+
+    public GeometryDeserializer(int srid) {
+        this(null);
+        this.srid = srid;
+    }
+    GeometryDeserializer(Class<?> vc) {
+        super(vc);
+    }
 
     @Override
     @SuppressWarnings("unchecked")
@@ -48,13 +64,17 @@ public class GeometryDeserializer<T extends Geometry> extends JsonDeserializer<T
                 JsonNode node = jp.readValueAsTree();
                 JsonNode coordinates = node.get("coordinates");
 
-                return coordinatesToGeometry(type, coordinates, jp);
+                T geom = coordinatesToGeometry(type, coordinates, jp);
+                geom.setSrid(srid);
+                return geom;
             } else if (fieldName.equals("geometries")) {
                 JsonNode node = jp.readValueAsTree();
                 JsonNode geometries = node.get("geometries");
 
                 // Safe cast, only attribute "geometries" are collections.
-                return (T) new GeometryCollection(readNodeAsGeometryArray(geometries, jp));
+                T geom = (T) new GeometryCollection(readNodeAsGeometryArray(geometries, jp));
+                geom.setSrid(srid);
+                return geom;
             }
         }
     }

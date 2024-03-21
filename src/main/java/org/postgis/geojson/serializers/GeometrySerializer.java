@@ -3,18 +3,19 @@ package org.postgis.geojson.serializers;
 import java.io.IOException;
 
 import org.postgis.Geometry;
-import org.postgis.Point;
-
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializerProvider;
 import org.postgis.GeometryCollection;
 import org.postgis.LineString;
 import org.postgis.MultiLineString;
 import org.postgis.MultiPoint;
 import org.postgis.MultiPolygon;
 import org.postgis.Polygon;
+import org.postgis.Point;
+
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+
 import static org.postgis.geojson.GeometryTypes.*;
 
 /**
@@ -22,7 +23,11 @@ import static org.postgis.geojson.GeometryTypes.*;
  *
  * @author Maycon Viana Bordin <mayconbordin@gmail.com>
  */
-public class GeometrySerializer extends JsonSerializer<Geometry> {
+public class GeometrySerializer extends StdSerializer<Geometry> {
+
+    public GeometrySerializer() {
+        super(Geometry.class);
+    }
 
     @Override
     public void serialize(Geometry geom, JsonGenerator json, SerializerProvider provider)

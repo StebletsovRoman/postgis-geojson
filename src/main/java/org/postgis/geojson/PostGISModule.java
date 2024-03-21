@@ -14,19 +14,25 @@ import org.postgis.geojson.serializers.GeometrySerializer;
  */
 public class PostGISModule extends SimpleModule {
     private static final long serialVersionUID = 1L;
+    private int defaultSrid;
+
+    public PostGISModule(int defaultSrid) {
+        this();
+        this.defaultSrid = defaultSrid;
+    }
 
     public PostGISModule() {
         super("PostGISModule");
 
         addSerializer(Geometry.class, new GeometrySerializer());
 
-        addDeserializer(Geometry.class, new GeometryDeserializer<Geometry>());
-        addDeserializer(Point.class, new GeometryDeserializer<Point>());
-        addDeserializer(Polygon.class, new GeometryDeserializer<Polygon>());
-        addDeserializer(LineString.class, new GeometryDeserializer<LineString>());
-        addDeserializer(MultiPolygon.class, new GeometryDeserializer<MultiPolygon>());
-        addDeserializer(MultiPoint.class, new GeometryDeserializer<MultiPoint>());
-        addDeserializer(MultiLineString.class, new GeometryDeserializer<MultiLineString>());
-        addDeserializer(GeometryCollection.class, new GeometryDeserializer<GeometryCollection>());
+        addDeserializer(Geometry.class, new GeometryDeserializer<Geometry>(defaultSrid));
+        addDeserializer(Point.class, new GeometryDeserializer<Point>(defaultSrid));
+        addDeserializer(Polygon.class, new GeometryDeserializer<Polygon>(defaultSrid));
+        addDeserializer(LineString.class, new GeometryDeserializer<LineString>(defaultSrid));
+        addDeserializer(MultiPolygon.class, new GeometryDeserializer<MultiPolygon>(defaultSrid));
+        addDeserializer(MultiPoint.class, new GeometryDeserializer<MultiPoint>(defaultSrid));
+        addDeserializer(MultiLineString.class, new GeometryDeserializer<MultiLineString>(defaultSrid));
+        addDeserializer(GeometryCollection.class, new GeometryDeserializer<GeometryCollection>(defaultSrid));
     }
 }
