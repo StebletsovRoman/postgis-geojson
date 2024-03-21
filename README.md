@@ -39,7 +39,7 @@ Then add the dependency to your `pom.xml` file:
 <dependency>
   <groupId>com.github.GeosatCO</groupId>
   <artifactId>postgis-geojson</artifactId>
-  <version>1.2</version>
+  <version>1.3</version>
 </dependency>
 ```
 
@@ -48,7 +48,7 @@ Or in a `build.sbt`:
 ```sbt
 resolvers += "jitpack" at "https://jitpack.io"
 
-libraryDependencies += "com.github.GeosatCO" % "postgis-geojson" % "1.2"
+libraryDependencies += "com.github.GeosatCO" % "postgis-geojson" % "1.3"
 
 ```
 
@@ -62,6 +62,10 @@ First you need to register the library module within the `ObjectMapper` instance
 ```java
 ObjectMapper mapper = new ObjectMapper();
 mapper.registerModule(new PostGISModule());
+
+// or with optional SRID for deserializing:
+int srid = 4326;
+mapper.registerModule(new PostGISModule(srid));
 ```
 
 The you can serialize objects:
