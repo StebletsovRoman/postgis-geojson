@@ -180,6 +180,8 @@ public class GeometrySerializer extends StdSerializer<Geometry> {
             json.writeStringField("name", "EPSG:" + srid);
             json.writeEndObject();
             json.writeEndObject();
+        } else {
+            System.out.print("[GeometrySerializer] Warning: No SRID in this geometry: " + geom.getSrid());
         }
         // "crs":{"type":"name","properties":{"name":"EPSG:4326"}}
     }
