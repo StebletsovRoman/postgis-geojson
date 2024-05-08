@@ -7,20 +7,20 @@ Note: this is a fork from https://github.com/mayconbordin/postgis-geojson with u
 
 ## GeoJSON Support
 
-This library gives support for serialization/deserialization of all [Geometry Objects](http://geojson.org/geojson-spec.html#geometry-objects) defined
+This library gives support for serialization/deserialization of all [Geometry Objects](https://stevage.github.io/geojson-spec/#section-3.1) defined
 in the GeoJSON specification.
 
 The relation between GeoJSON geometry objects and PostGIS objects is given below:
 
-GeoJSON           | PostGIS
-------------------| -------------
-[Point](http://geojson.org/geojson-spec.html#point)| [Point](http://postgis.refractions.net/documentation/javadoc/org/postgis/Point.html)
-[MultiPoint](http://geojson.org/geojson-spec.html#multipoint)| [MultiPoint](http://postgis.refractions.net/documentation/javadoc/org/postgis/MultiPoint.html)
-[LineString](http://geojson.org/geojson-spec.html#linestring)| [LineString](http://postgis.refractions.net/documentation/javadoc/org/postgis/LineString.html)
-[MultiLineString](http://geojson.org/geojson-spec.html#multilinestring)| [MultiLineString](http://postgis.refractions.net/documentation/javadoc/org/postgis/MultiLineString.html)
-[Polygon](http://geojson.org/geojson-spec.html#polygon)| [Polygon](http://postgis.refractions.net/documentation/javadoc/org/postgis/Polygon.html)
-[MultiPolygon](http://geojson.org/geojson-spec.html#multipolygon)| [MultiPolygon](http://postgis.refractions.net/documentation/javadoc/org/postgis/MultiPolygon.html)
-[GeometryCollection](http://geojson.org/geojson-spec.html#geometry-collection)| [GeometryCollection](http://postgis.refractions.net/documentation/javadoc/org/postgis/GeometryCollection.html)
+| GeoJSON                                                                         | PostGIS                                                                                                                  |
+|---------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------|
+| [ Point ]( https://stevage.github.io/geojson-spec/#section-3.1.2 )              | [ Point ]( https://javadoc.io/doc/net.postgis/postgis-geometry/2.5.1/org/postgis/Point.html )                            |
+| [ MultiPoint ]( https://stevage.github.io/geojson-spec/#section-3.1.3 )         | [ MultiPoint ]( https://javadoc.io/doc/net.postgis/postgis-geometry/2.5.1/org/postgis/MultiPoint.html )                  |
+| [ LineString ]( https://stevage.github.io/geojson-spec/#section-3.1.4 )         | [ LineString ]( https://javadoc.io/doc/net.postgis/postgis-geometry/2.5.1/org/postgis/LineString.html )                  |
+| [ MultiLineString ]( https://stevage.github.io/geojson-spec/#section-3.1.5 )    | [ MultiLineString ](https://javadoc.io/doc/net.postgis/postgis-geometry/2.5.1/org/postgis/MultiLineString.html)          |
+| [ Polygon ]( https://stevage.github.io/geojson-spec/#section-3.1.6 )            | [ Polygon ]( https://javadoc.io/doc/net.postgis/postgis-geometry/2.5.1/org/postgis/Polygon.html )                        |
+| [ MultiPolygon ]( https://stevage.github.io/geojson-spec/#section-3.1.7 )       | [ MultiPolygon ]( https://javadoc.io/doc/net.postgis/postgis-geometry/2.5.1/org/postgis/MultiPolygon.html )              |
+| [ GeometryCollection ]( https://stevage.github.io/geojson-spec/#section-3.1.8 ) | [ GeometryCollection ]( https://javadoc.io/doc/net.postgis/postgis-geometry/2.5.1/org/postgis/GeometryCollection.html )  |
 
 ## Installation
 
