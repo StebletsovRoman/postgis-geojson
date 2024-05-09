@@ -25,8 +25,6 @@ import static org.postgis.geojson.GeometryTypes.*;
  */
 public class GeometrySerializer extends StdSerializer<Geometry> {
 
-    boolean isSridAdded = false;
-
     public GeometrySerializer() {
         super(Geometry.class);
     }
@@ -35,11 +33,16 @@ public class GeometrySerializer extends StdSerializer<Geometry> {
     public void serialize(Geometry geom, JsonGenerator json, SerializerProvider provider)
             throws IOException, JsonProcessingException {
         json.writeStartObject();
-        if (!isSridAdded) {
-            writeSridField(geom, json);
-            isSridAdded = true;
-        }
 
+        writeSridField(geom, json);
+
+        // separated to avoid bugs
+        serializeGenericGeometry(geom, json);
+
+        json.writeEndObject();
+    }
+
+    protected void serializeGenericGeometry(Geometry geom, JsonGenerator json) throws IOException {
         if (geom instanceof Point) {
             serializePoint((Point) geom, json);
         } else if (geom instanceof Polygon) {
@@ -55,8 +58,6 @@ public class GeometrySerializer extends StdSerializer<Geometry> {
         } else if (geom instanceof GeometryCollection) {
             serializeGeometryCollection((GeometryCollection) geom, json);
         }
-
-        json.writeEndObject();
     }
 
     protected void serializeGeometryCollection(GeometryCollection gc, JsonGenerator json) throws IOException {
@@ -64,7 +65,9 @@ public class GeometrySerializer extends StdSerializer<Geometry> {
         json.writeArrayFieldStart("geometries");
 
         for (Geometry geom : gc.getGeometries()) {
-            serialize(geom, json, null);
+            json.writeStartObject();
+            serializeGenericGeometry(geom, json);
+            json.writeEndObject();
         }
 
         json.writeEndArray();
@@ -181,7 +184,11 @@ public class GeometrySerializer extends StdSerializer<Geometry> {
             json.writeEndObject();
             json.writeEndObject();
         } else {
-            System.out.print("[GeometrySerializer] Warning: No SRID in this geometry: " + geom.getSrid());
+            System.out.println(
+                "[GeometrySerializer] Warning: No SRID in this geometry: "
+                + geom.toString().substring(0, 10)
+                + "..."
+            );
         }
         // "crs":{"type":"name","properties":{"name":"EPSG:4326"}}
     }

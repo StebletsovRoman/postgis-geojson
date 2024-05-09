@@ -39,7 +39,7 @@ Then add the dependency to your `pom.xml` file:
 <dependency>
   <groupId>com.github.GeosatCO</groupId>
   <artifactId>postgis-geojson</artifactId>
-  <version>1.5</version>
+  <version>1.6</version>
 </dependency>
 ```
 
@@ -48,7 +48,7 @@ Or in a `build.sbt`:
 ```sbt
 resolvers += "jitpack" at "https://jitpack.io"
 
-libraryDependencies += "com.github.GeosatCO" % "postgis-geojson" % "1.5"
+libraryDependencies += "com.github.GeosatCO" % "postgis-geojson" % "1.6"
 
 ```
 
