@@ -48,7 +48,7 @@ Or in a `build.sbt`:
 ```sbt
 resolvers += "jitpack" at "https://jitpack.io"
 
-libraryDependencies += "com.github.GeosatCO" % "postgis-geojson" % "1.6"
+libraryDependencies += "com.github.StebletsovRoman" % "postgis-geojson" % "1.7"
 
 ```
 
