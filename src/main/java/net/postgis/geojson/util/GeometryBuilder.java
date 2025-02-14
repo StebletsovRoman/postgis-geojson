@@ -1,9 +1,11 @@
-package org.postgis.geojson.util;
+package net.postgis.geojson.util;
+
+import net.postgis.jdbc.geometry.LinearRing;
+import net.postgis.jdbc.geometry.Point;
+import net.postgis.jdbc.geometry.Polygon;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.postgis.*;
 
 public class GeometryBuilder {
     public static final int DEFAULT_SRID = 4326;
@@ -11,21 +13,21 @@ public class GeometryBuilder {
     public static Point[] createPoints(double[] points) {
         List<Point> result = new ArrayList<Point>();
 
-        for (int i=0; i<points.length; i+=2) {
-            result.add(new Point(points[i], points[i+1]));
+        for (int i = 0; i < points.length; i += 2) {
+            result.add(new Point(points[i], points[i + 1]));
         }
 
         return (Point[]) result.toArray();
     }
 
     public static Polygon createPolygon(Point[] points) {
-        Polygon result = new Polygon(new LinearRing[] {new LinearRing(points)});
+        Polygon result = new Polygon(new LinearRing[]{new LinearRing(points)});
         result.setSrid(DEFAULT_SRID);
         return result;
     }
 
     public static Polygon createPolygon(Point[] points, int srid) {
-        Polygon result = new Polygon(new LinearRing[] {new LinearRing(points)});
+        Polygon result = new Polygon(new LinearRing[]{new LinearRing(points)});
         result.setSrid(srid);
         return result;
     }

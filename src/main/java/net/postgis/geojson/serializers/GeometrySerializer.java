@@ -1,22 +1,27 @@
-package org.postgis.geojson.serializers;
-
-import java.io.IOException;
-
-import org.postgis.Geometry;
-import org.postgis.GeometryCollection;
-import org.postgis.LineString;
-import org.postgis.MultiLineString;
-import org.postgis.MultiPoint;
-import org.postgis.MultiPolygon;
-import org.postgis.Polygon;
-import org.postgis.Point;
+package net.postgis.geojson.serializers;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import net.postgis.jdbc.geometry.Geometry;
+import net.postgis.jdbc.geometry.GeometryCollection;
+import net.postgis.jdbc.geometry.LineString;
+import net.postgis.jdbc.geometry.MultiLineString;
+import net.postgis.jdbc.geometry.MultiPoint;
+import net.postgis.jdbc.geometry.MultiPolygon;
+import net.postgis.jdbc.geometry.Point;
+import net.postgis.jdbc.geometry.Polygon;
 
-import static org.postgis.geojson.GeometryTypes.*;
+import java.io.IOException;
+
+import static net.postgis.geojson.GeometryTypes.GEOMETRY_COLLECTION;
+import static net.postgis.geojson.GeometryTypes.LINE_STRING;
+import static net.postgis.geojson.GeometryTypes.MULTI_LINE_STRING;
+import static net.postgis.geojson.GeometryTypes.MULTI_POINT;
+import static net.postgis.geojson.GeometryTypes.MULTI_POLYGON;
+import static net.postgis.geojson.GeometryTypes.POINT;
+import static net.postgis.geojson.GeometryTypes.POLYGON;
 
 /**
  * Serializer for Geometry types.
@@ -31,7 +36,7 @@ public class GeometrySerializer extends StdSerializer<Geometry> {
 
     @Override
     public void serialize(Geometry geom, JsonGenerator json, SerializerProvider provider)
-            throws IOException, JsonProcessingException {
+        throws IOException, JsonProcessingException {
         json.writeStartObject();
 
         writeSridField(geom, json);
@@ -186,8 +191,8 @@ public class GeometrySerializer extends StdSerializer<Geometry> {
         } else {
             System.out.println(
                 "[GeometrySerializer] Warning: No SRID in this geometry: "
-                + geom.toString().substring(0, 10)
-                + "..."
+                    + geom.toString().substring(0, 10)
+                    + "..."
             );
         }
         // "crs":{"type":"name","properties":{"name":"EPSG:4326"}}

@@ -1,21 +1,23 @@
-package org.postgis.geojson.deserializers;
+package net.postgis.geojson.deserializers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import net.postgis.jdbc.geometry.Geometry;
+import net.postgis.jdbc.geometry.GeometryCollection;
+import net.postgis.jdbc.geometry.LineString;
+import net.postgis.jdbc.geometry.MultiLineString;
+import net.postgis.jdbc.geometry.MultiPoint;
+import net.postgis.jdbc.geometry.MultiPolygon;
+import net.postgis.jdbc.geometry.Point;
+import net.postgis.jdbc.geometry.Polygon;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
-import org.postgis.Geometry;
-import org.postgis.GeometryCollection;
-import org.postgis.LineString;
-import org.postgis.MultiLineString;
-import org.postgis.MultiPoint;
-import org.postgis.MultiPolygon;
-import org.postgis.Point;
-import org.postgis.Polygon;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 
 /**
- *
  * @author mayconbordin
  * @author Sebastien Deleuze
  * @author C Daniel Sanchez
@@ -73,7 +75,7 @@ public class GeometryDeserializerTest {
         System.out.println("deserializePolygon");
 
         String json = "{\"type\": \"Polygon\",\"coordinates\": "
-                + "[[[100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0]]]}";
+            + "[[[100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0]]]}";
 
         Polygon p = mapper.readValue(json, Polygon.class);
 
@@ -102,7 +104,7 @@ public class GeometryDeserializerTest {
         System.out.println("deserializeMultiLineString");
 
         String json = "{\"type\": \"MultiLineString\",\"coordinates\": "
-                + "[[[100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0]]]}";
+            + "[[[100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0]]]}";
 
         MultiLineString p = mapper.readValue(json, MultiLineString.class);
 
@@ -147,10 +149,10 @@ public class GeometryDeserializerTest {
         System.out.println("deserializeMultiPolygon");
 
         String json = "{\"type\": \"MultiPolygon\",\"coordinates\": "
-                + "[[[[102.0, 2.0], [103.0, 2.0], [103.0, 3.0], [102.0, 3.0], [102.0, 2.0]]],"
-                + "[[[100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0]],"
-                + "[[100.2, 0.2], [100.8, 0.2], [100.8, 0.8], [100.2, 0.8], [100.2, 0.2]]]"
-                + "]}";
+            + "[[[[102.0, 2.0], [103.0, 2.0], [103.0, 3.0], [102.0, 3.0], [102.0, 2.0]]],"
+            + "[[[100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0]],"
+            + "[[100.2, 0.2], [100.8, 0.2], [100.8, 0.8], [100.2, 0.8], [100.2, 0.2]]]"
+            + "]}";
 
         MultiPolygon p = mapper.readValue(json, MultiPolygon.class);
 
@@ -181,9 +183,9 @@ public class GeometryDeserializerTest {
         System.out.println("deserializeGeometryCollection");
 
         String json = "{\"type\": \"GeometryCollection\",\"geometries\": ["
-                + "{ \"type\": \"Point\", \"coordinates\": [100.0, 0.0]},"
-                + "{ \"type\": \"LineString\", \"coordinates\": [ [101.0, 0.0], [102.0, 1.0] ] }"
-                + "]}";
+            + "{ \"type\": \"Point\", \"coordinates\": [100.0, 0.0]},"
+            + "{ \"type\": \"LineString\", \"coordinates\": [ [101.0, 0.0], [102.0, 1.0] ] }"
+            + "]}";
 
         GeometryCollection p = mapper.readValue(json, GeometryCollection.class);
 
@@ -238,10 +240,10 @@ public class GeometryDeserializerTest {
         System.out.println("deserializer SRID");
 
         String json = "{\"id\": 1,"
-                + "\"shape\":{\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"EPSG:4326\"}},"
-                + "\"type\":\"MultiLineString\",\"coordinates\":"
-                + "[[[100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0]]]"
-                + "}}";
+            + "\"shape\":{\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"EPSG:4326\"}},"
+            + "\"type\":\"MultiLineString\",\"coordinates\":"
+            + "[[[100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0]]]"
+            + "}}";
 
         InnerClass c = mapper.readValue(json, InnerClass.class);
         MultiLineString p = c.shape();

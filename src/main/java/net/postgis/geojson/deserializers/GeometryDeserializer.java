@@ -1,10 +1,4 @@
-package org.postgis.geojson.deserializers;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+package net.postgis.geojson.deserializers;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
@@ -12,18 +6,28 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import net.postgis.jdbc.geometry.Geometry;
+import net.postgis.jdbc.geometry.GeometryCollection;
+import net.postgis.jdbc.geometry.LineString;
+import net.postgis.jdbc.geometry.LinearRing;
+import net.postgis.jdbc.geometry.MultiLineString;
+import net.postgis.jdbc.geometry.MultiPoint;
+import net.postgis.jdbc.geometry.MultiPolygon;
+import net.postgis.jdbc.geometry.Point;
+import net.postgis.jdbc.geometry.Polygon;
 
-import org.postgis.Geometry;
-import org.postgis.GeometryCollection;
-import org.postgis.LineString;
-import org.postgis.LinearRing;
-import org.postgis.MultiLineString;
-import org.postgis.MultiPoint;
-import org.postgis.MultiPolygon;
-import org.postgis.Point;
-import org.postgis.Polygon;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
-import static org.postgis.geojson.GeometryTypes.*;
+import static net.postgis.geojson.GeometryTypes.LINE_STRING;
+import static net.postgis.geojson.GeometryTypes.MULTI_LINE_STRING;
+import static net.postgis.geojson.GeometryTypes.MULTI_POINT;
+import static net.postgis.geojson.GeometryTypes.MULTI_POLYGON;
+import static net.postgis.geojson.GeometryTypes.POINT;
+import static net.postgis.geojson.GeometryTypes.POLYGON;
 
 /**
  * Deserializer for Geometry types.
@@ -44,7 +48,7 @@ public class GeometryDeserializer<T extends Geometry> extends StdDeserializer<T>
     @Override
     @SuppressWarnings("unchecked")
     public T deserialize(JsonParser jp, DeserializationContext dc)
-            throws IOException, JsonProcessingException {
+        throws IOException, JsonProcessingException {
 
         final JsonNode nodeTree = jp.readValueAsTree();
 
@@ -55,7 +59,7 @@ public class GeometryDeserializer<T extends Geometry> extends StdDeserializer<T>
 
         T geom = nodeTree.has("geometries")
             ? (T) new GeometryCollection(readNodeAsGeometryArray(nodeTree.get("geometries"), jp))
-            :coordinatesToGeometry(type, nodeTree.get("coordinates"), jp);
+            : coordinatesToGeometry(type, nodeTree.get("coordinates"), jp);
 
         geom.setSrid(srid);
 
@@ -65,7 +69,7 @@ public class GeometryDeserializer<T extends Geometry> extends StdDeserializer<T>
 
     @SuppressWarnings("unchecked")
     protected T coordinatesToGeometry(String type, JsonNode coordinates, JsonParser jp)
-            throws JsonParseException {
+        throws JsonParseException {
         switch (type) {
             case POINT:
                 return (T) readNodeAsPoint(coordinates);
@@ -81,12 +85,12 @@ public class GeometryDeserializer<T extends Geometry> extends StdDeserializer<T>
                 return (T) new MultiPolygon(readNodeAsPolygonArray(coordinates));
             default:
                 throw new JsonParseException(jp, "\"" + type + "\" is not a valid Geometry type.",
-                        jp.currentLocation());
+                    jp.currentLocation());
         }
     }
 
     protected Geometry[] readNodeAsGeometryArray(JsonNode node, JsonParser jp)
-            throws JsonParseException {
+        throws JsonParseException {
         if (!node.isArray()) {
             return null;
         }

@@ -1,9 +1,16 @@
-package org.postgis.geojson;
+package net.postgis.geojson;
 
-import org.postgis.*;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import org.postgis.geojson.deserializers.GeometryDeserializer;
-import org.postgis.geojson.serializers.GeometrySerializer;
+import net.postgis.jdbc.geometry.Geometry;
+import net.postgis.jdbc.geometry.GeometryCollection;
+import net.postgis.jdbc.geometry.LineString;
+import net.postgis.jdbc.geometry.MultiLineString;
+import net.postgis.jdbc.geometry.MultiPoint;
+import net.postgis.jdbc.geometry.MultiPolygon;
+import net.postgis.jdbc.geometry.Point;
+import net.postgis.jdbc.geometry.Polygon;
+import net.postgis.geojson.deserializers.GeometryDeserializer;
+import net.postgis.geojson.serializers.GeometrySerializer;
 
 /**
  * Module for loading serializers/deserializers.
