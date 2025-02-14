@@ -1,5 +1,5 @@
 # postgis-geojson
-[![Release](https://img.shields.io/github/release/GeosatCO/postgis-geojson.svg?label=JitPack)](https://jitpack.io/#GeosatCO/postgis-geojson)
+[![](https://jitpack.io/v/StebletsovRoman/postgis-geojson.svg)](https://jitpack.io/#StebletsovRoman/postgis-geojson)
 
 GeoJSON Jackson Serializers and Deserializers for PostGIS Geometry objects.
 
